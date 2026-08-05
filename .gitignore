@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local data outputs
+data/raw/*.csv
+data/processed/*.csv
+data/processed/*.parquet
+data/interim/*.csv
+data/interim/*.parquet
+
+# Reports and dashboard exports
+reports/exports/
+dashboard/exports/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
