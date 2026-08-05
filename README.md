@@ -2,7 +2,7 @@
 
 A decision-focused experimentation case study using the Hillstrom email marketing dataset.
 
-> **Project status:** Experiment integrity, average treatment effects, direct treatment comparison and pre-specified segment analysis are complete. Held-out targeting and policy evaluation are now in progress.
+> **Project status:** Core analysis is complete. The project is now moving into executive reporting, dashboard production and portfolio publication.
 
 ## Business decision
 
@@ -11,44 +11,46 @@ A retail marketing director must decide:
 - whether an email campaign creates genuine incremental value;
 - which treatment should be preferred;
 - whether the result is statistically reliable and commercially worthwhile;
-- which customers should be contacted when campaign capacity is limited; and
+- whether customer-level targeting improves profit beyond the strongest fixed treatment; and
 - when contact cost, margin or customer response makes no email more profitable than sending.
 
-The analysis moves beyond reporting conversion rates by connecting randomized experimental evidence to revenue, contribution margin, contact cost and treatment-policy decisions.
+The analysis moves beyond conversion reporting by connecting randomized experimental evidence to revenue, contribution margin, contact cost and treatment-policy decisions.
 
-## Current decision
+## Final analytical decision
 
-**Men's E-Mail is the strongest fixed treatment in the experiment.**
+**Use Men's E-Mail as the operating treatment for eligible customers when the documented contribution-margin and contact-cost threshold is met. Do not deploy the current personalised targeting model.**
 
 Relative to No E-Mail:
 
 - Men's E-Mail increased spend per eligible customer by **0.770** (95% CI: **0.484 to 1.052**).
 - Women's E-Mail increased spend per eligible customer by **0.424** (95% CI: **0.152 to 0.686**).
 
-In the direct head-to-head comparison, Men's E-Mail also outperformed Women's E-Mail:
+In the direct head-to-head comparison, Men's E-Mail outperformed Women's E-Mail on:
 
 - visit rate: **+3.14 percentage points**;
 - conversion rate: **+0.37 percentage points**; and
 - spend per eligible customer: **+0.345** (95% CI: **0.044 to 0.666**, Holm-adjusted p = **0.0305**).
 
-The segment analysis did not find reliable treatment-effect differences after multiplicity adjustment. Therefore:
+The pre-specified segment interaction tests did not support a hand-built targeting rule. On the 19,200-customer randomized holdout, the personalised policies had positive point estimates but did not reliably outperform Men's E-Mail to all:
 
-- Men's-send-to-all remains the fixed-policy benchmark;
-- subgroup tables are not used to create a hand-built targeting rule; and
-- personalised targeting must prove its value on held-out randomized data before it can replace the fixed benchmark.
+- highest predicted spend policy: **+28.7 profit units per 1,000**, 95% bootstrap interval **-120.2 to +170.6**;
+- profit-aware policy: **+18.3 per 1,000**, 95% bootstrap interval **-129.1 to +155.4**.
+
+Because both intervals include zero and meaningful negative outcomes, personalisation remains exploratory rather than deployable.
 
 See:
 
 - [`reports/validation_findings.md`](reports/validation_findings.md)
 - [`reports/main_effect_findings.md`](reports/main_effect_findings.md)
 - [`reports/segment_findings.md`](reports/segment_findings.md)
+- [`reports/targeting_findings.md`](reports/targeting_findings.md)
 
 ## Commercial interpretation
 
 At a 40% contribution margin and contact cost of 0.10 per customer, the point-estimate incremental profit per 1,000 eligible customers was approximately:
 
-- **Mens E-Mail: 208**
-- **Womens E-Mail: 70**
+- **Men's E-Mail: 208**
+- **Women's E-Mail: 70**
 
 Using the lower 95% revenue-effect bound under the same assumptions, both treatments remained positive, but the Women's treatment had a much narrower cost buffer.
 
@@ -99,17 +101,18 @@ The raw dataset is not committed to this repository. The download script retriev
 - Pre-specified recency, prior-spend, channel, geography, status and affinity segments
 - Segment-level spend estimates
 - Joint treatment-by-segment interaction tests
-- Multiplicity-aware decision on rule-based targeting
+- Multiplicity-aware rejection of unsupported rule-based targeting
 
-### Phase 5 — Held-out targeting and policy value — in progress
+### Phase 5 — Held-out targeting and policy value — complete
 
 - Treatment-stratified 70/30 train-holdout split
 - Separate outcome models for all three randomized arms
-- No-email, fixed-treatment and personalised policy benchmarks
+- Fixed and personalised policy benchmarks
 - Inverse-propensity and doubly robust policy evaluation
 - Paired bootstrap confidence intervals versus Men's-send-to-all
 - Capacity-constrained policy analysis
 - Margin and contact-cost sensitivity
+- Non-deployment decision where model uplift was not reliably positive
 
 ## Analytical safeguards
 
@@ -118,8 +121,8 @@ The raw dataset is not committed to this repository. The download script retriev
 - Spend per eligible customer is the primary commercial outcome.
 - Confidence intervals and effect sizes are interpreted alongside p-values.
 - A significant effect inside one subgroup is not treated as evidence that subgroups differ.
-- Predictive accuracy is not presented as proof of causal or policy value.
-- A personalised policy must beat Men's-send-to-all on held-out randomized data.
+- Predictive accuracy and feature importance are not presented as proof of causal or policy value.
+- A personalised policy must beat Men's-send-to-all on held-out randomized data with adequate precision.
 - Revenue observed among treated customers is not confused with incremental revenue caused by treatment.
 
 ## Repository structure
@@ -144,6 +147,7 @@ ab-testing-incremental-revenue/
 │   ├── executive_memo_plan.md
 │   ├── main_effect_findings.md
 │   ├── segment_findings.md
+│   ├── targeting_findings.md
 │   └── validation_findings.md
 ├── scripts/
 │   ├── download_data.py
@@ -182,11 +186,11 @@ python scripts/run_segment_analysis.py
 python scripts/run_targeting_analysis.py
 ```
 
-## Planned portfolio deliverables
+## Portfolio deliverables
 
 - Reproducible Python analysis
 - SQL validation and experiment-summary queries
-- Power BI executive report
+- Executive dashboard
 - Two-page decision memo
 - Methodology and limitations note
 - Three-minute walkthrough
@@ -203,9 +207,10 @@ python scripts/run_targeting_analysis.py
 - [x] Build commercial sensitivity model
 - [x] Complete direct treatment comparison
 - [x] Complete pre-specified segment analysis
-- [ ] Complete held-out targeting analysis
+- [x] Complete held-out targeting analysis
 - [ ] Build executive dashboard
 - [ ] Publish decision memo and final recommendation
+- [ ] Add portfolio case-study page and CV-ready project evidence
 
 ## Author
 
