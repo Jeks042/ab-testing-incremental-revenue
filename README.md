@@ -2,7 +2,7 @@
 
 A decision-focused experimentation case study using the Hillstrom email marketing dataset.
 
-> **Project status:** Experiment integrity passed. Average treatment-effect and profit-sensitivity analysis is now in progress.
+> **Project status:** Experiment integrity and average treatment-effect analysis are complete. Direct treatment comparison and segment-effect analysis are now in progress.
 
 ## Business decision
 
@@ -14,7 +14,19 @@ A retail marketing director must decide:
 - which customers should be contacted when campaign capacity is limited; and
 - when contact cost, margin or customer response makes suppression more profitable than sending.
 
-The analysis is designed to move beyond reporting conversion rates. It connects experimental evidence to revenue, contribution margin, contact cost and targeting decisions.
+The analysis moves beyond reporting conversion rates by connecting experimental evidence to revenue, contribution margin, contact cost and targeting decisions.
+
+## Interim result
+
+Both email treatments increased visit rate, conversion rate and spend per eligible customer relative to the no-email control.
+
+- Men's E-Mail increased spend per eligible customer by **0.770** (95% CI: **0.484 to 1.052**).
+- Women's E-Mail increased spend per eligible customer by **0.424** (95% CI: **0.152 to 0.686**).
+- The Men's treatment has the stronger observed commercial profile and remains profitable under a wider range of margin and contact-cost assumptions.
+
+The Men's treatment is therefore the **provisional default option**, but the project does not yet claim that it is statistically superior to the Women's treatment. A direct head-to-head comparison is required before making that statement.
+
+See [`reports/main_effect_findings.md`](reports/main_effect_findings.md) for the complete effect estimates, confidence intervals and commercial sensitivity.
 
 ## Validation decision
 
@@ -28,7 +40,7 @@ The review found:
 - very small baseline differences across treatment arms; and
 - no evidence supporting deletion of exact row matches in the absence of a customer identifier.
 
-See [`reports/validation_findings.md`](reports/validation_findings.md) for the formal go decision and the treatment-allocation and balance evidence.
+See [`reports/validation_findings.md`](reports/validation_findings.md) for the formal go decision.
 
 ## Dataset
 
@@ -64,9 +76,7 @@ The raw dataset is not committed to this repository. Run the download script des
 - Outcome consistency checks
 - Formal go/no-go decision
 
-### Phase 2 — Average treatment effects — in progress
-
-For each treatment versus control:
+### Phase 2 — Average treatment effects — complete
 
 - Visit-rate difference
 - Conversion-rate difference
@@ -76,18 +86,19 @@ For each treatment versus control:
 - Multiplicity-aware interpretation
 - Practical versus statistical significance
 
-### Phase 3 — Commercial evaluation
+### Phase 3 — Commercial evaluation — complete for send-to-all scenarios
 
 - Incremental revenue
 - Contribution-margin sensitivity
 - Contact-cost sensitivity
 - Break-even economics
-- Profit under send-to-all and selective-treatment policies
+- Profit per 1,000 eligible customers
 
-### Phase 4 — Heterogeneous effects and targeting
+### Phase 4 — Heterogeneous effects and targeting — in progress
 
+- Direct Men's-versus-Women's treatment comparison
 - Pre-specified segment effects
-- Exploratory subgroup analysis with clear caveats
+- Interaction tests for treatment heterogeneity
 - Rule-based targeting benchmark
 - Model-based uplift extension
 - Gain and uplift curves
@@ -123,6 +134,7 @@ ab-testing-incremental-revenue/
 ├── reports/
 │   ├── dashboard_plan.md
 │   ├── executive_memo_plan.md
+│   ├── main_effect_findings.md
 │   └── validation_findings.md
 ├── scripts/
 │   ├── download_data.py
@@ -173,9 +185,10 @@ python scripts/run_experiment_analysis.py
 - [x] Add reproducible download and validation framework
 - [x] Download and profile the raw data
 - [x] Complete experiment-integrity checks
-- [ ] Estimate overall treatment effects
-- [ ] Build commercial sensitivity model
-- [ ] Complete segment and targeting analysis
+- [x] Estimate overall treatment effects
+- [x] Build send-to-all commercial sensitivity model
+- [ ] Complete direct treatment and segment analysis
+- [ ] Complete targeting analysis
 - [ ] Build executive dashboard
 - [ ] Publish decision memo and final recommendation
 
