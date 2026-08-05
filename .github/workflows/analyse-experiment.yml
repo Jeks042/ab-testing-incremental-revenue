@@ -1,0 +1,49 @@
+name: Analyse experiment effects
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/run_experiment_analysis.py"
+      - "src/experiment_metrics.py"
+      - "src/profit_model.py"
+      - "notebooks/02_experiment_analysis.ipynb"
+      - ".github/workflows/analyse-experiment.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Download and validate source data
+        run: python scripts/download_data.py
+
+      - name: Estimate main treatment effects
+        run: python scripts/run_experiment_analysis.py
+
+      - name: Upload experiment analysis tables
+        uses: actions/upload-artifact@v7
+        with:
+          name: experiment-analysis-tables
+          path: reports/analysis_tables/
+          if-no-files-found: error
+          retention-days: 30
