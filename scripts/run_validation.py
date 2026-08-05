@@ -3,14 +3,22 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
+
+# When this file is executed directly, Python adds ``scripts/`` rather than the
+# repository root to ``sys.path``. Add the project root explicitly so the local
+# ``src`` package can be imported consistently in GitHub Actions and locally.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 import pandas as pd
 
 from src.data_validation import load_data, numeric_balance_table, validate_data
 
-DATA_PATH = Path("data/raw/hillstrom.csv")
-OUTPUT_DIR = Path("reports/tables")
+DATA_PATH = PROJECT_ROOT / "data/raw/hillstrom.csv"
+OUTPUT_DIR = PROJECT_ROOT / "reports/tables"
 
 
 def main() -> None:
@@ -31,9 +39,7 @@ def main() -> None:
         index=False,
     )
 
-    allocation = (
-        frame["segment"].value_counts().rename("customers").to_frame()
-    )
+    allocation = frame["segment"].value_counts().rename("customers").to_frame()
     allocation["allocation_pct"] = allocation["customers"] / len(frame)
     allocation.reset_index(names="segment").to_csv(
         OUTPUT_DIR / "treatment_allocation.csv",
