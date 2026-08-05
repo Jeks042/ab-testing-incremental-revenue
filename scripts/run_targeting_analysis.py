@@ -5,6 +5,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import pandas as pd
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -55,8 +57,7 @@ def main() -> None:
 
     profit_policy = policies["Model: profit-aware"]
     recommendation_share = (
-        __import__("pandas")
-        .Series(profit_policy, name="recommended_arm")
+        pd.Series(profit_policy, name="recommended_arm")
         .value_counts()
         .rename("customers")
         .to_frame()
@@ -66,11 +67,14 @@ def main() -> None:
     )
     recommendation_share = recommendation_share.reset_index()
 
-    split_summary = __import__("pandas").DataFrame(
+    split_summary = pd.DataFrame(
         {
             "population": ["training", "holdout"],
             "customers": [len(result.train_frame), len(result.test_frame)],
-            "share": [len(result.train_frame) / len(frame), len(result.test_frame) / len(frame)],
+            "share": [
+                len(result.train_frame) / len(frame),
+                len(result.test_frame) / len(frame),
+            ],
         }
     )
 
