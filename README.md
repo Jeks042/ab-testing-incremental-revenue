@@ -2,7 +2,7 @@
 
 A decision-focused experimentation case study using the Hillstrom email marketing dataset.
 
-> **Project status:** Foundation and validation framework in progress. No experimental result or commercial recommendation is published yet.
+> **Project status:** Experiment integrity passed. Average treatment-effect and profit-sensitivity analysis is now in progress.
 
 ## Business decision
 
@@ -14,7 +14,21 @@ A retail marketing director must decide:
 - which customers should be contacted when campaign capacity is limited; and
 - when contact cost, margin or customer response makes suppression more profitable than sending.
 
-The analysis is designed to move beyond reporting conversion rates. It will connect experimental evidence to revenue, contribution margin, contact cost and targeting decisions.
+The analysis is designed to move beyond reporting conversion rates. It connects experimental evidence to revenue, contribution margin, contact cost and targeting decisions.
+
+## Validation decision
+
+The experiment passed the integrity review and all 64,000 assigned customers remain in the primary intention-to-treat analysis.
+
+The review found:
+
+- no missing values or invalid binary fields;
+- no negative or internally inconsistent outcome values;
+- no evidence of sample-ratio mismatch;
+- very small baseline differences across treatment arms; and
+- no evidence supporting deletion of exact row matches in the absence of a customer identifier.
+
+See [`reports/validation_findings.md`](reports/validation_findings.md) for the formal go decision and the treatment-allocation and balance evidence.
 
 ## Dataset
 
@@ -32,27 +46,25 @@ The raw dataset is not committed to this repository. Run the download script des
 
 ## Questions the project will answer
 
-1. Was random assignment implemented consistently with the expected allocation?
-2. Were treatment groups balanced on pre-treatment customer characteristics?
-3. Did either email treatment increase visit rate, conversion rate or revenue per customer?
-4. How large and precise were the estimated treatment effects?
-5. Are statistically significant effects also commercially meaningful?
-6. How do contribution margin and contact cost change the decision?
-7. Do treatment effects vary across defensible customer segments?
-8. Can a targeting policy improve incremental profit relative to send-to-all?
+1. Did either email treatment increase visit rate, conversion rate or revenue per eligible customer?
+2. How large and precise were the estimated treatment effects?
+3. Are statistically significant effects also commercially meaningful?
+4. How do contribution margin and contact cost change the decision?
+5. Do treatment effects vary across defensible customer segments?
+6. Can a targeting policy improve incremental profit relative to send-to-all?
 
 ## Analytical plan
 
-### Phase 1 — Experiment integrity
+### Phase 1 — Experiment integrity — complete
 
 - Schema and data-type validation
-- Missing values and duplicate records
+- Missing values and exact row matches
 - Treatment allocation and sample-ratio mismatch test
 - Baseline balance across pre-treatment variables
 - Outcome consistency checks
-- Identification of any data issues that could invalidate inference
+- Formal go/no-go decision
 
-### Phase 2 — Average treatment effects
+### Phase 2 — Average treatment effects — in progress
 
 For each treatment versus control:
 
@@ -83,12 +95,14 @@ For each treatment versus control:
 
 ## Analytical safeguards
 
+- All assigned customers remain in the intention-to-treat analysis.
 - Treatment assignment is kept separate from outcomes and pre-treatment covariates.
-- Post-treatment fields will never be used as targeting features.
-- Subgroup findings will be labelled as pre-specified or exploratory.
-- Prediction quality will not be presented as evidence of causal impact.
-- A statistically significant result will not automatically be called profitable.
-- Revenue attributed to treated customers will not be confused with incremental revenue caused by treatment.
+- Post-treatment fields are never used as targeting features.
+- Revenue per eligible customer is the primary commercial outcome.
+- Confidence intervals and effect sizes are interpreted alongside p-values.
+- Subgroup findings require interaction evidence rather than separate significance tests.
+- A statistically significant result is not automatically called profitable.
+- Revenue observed among treated customers is not confused with incremental revenue caused by treatment.
 
 ## Repository structure
 
@@ -104,11 +118,16 @@ ab-testing-incremental-revenue/
 │   ├── analysis_plan.md
 │   └── project_brief.md
 ├── notebooks/
-│   └── README.md
+│   ├── 01_data_validation.ipynb
+│   └── 02_experiment_analysis.ipynb
 ├── reports/
-│   └── README.md
+│   ├── dashboard_plan.md
+│   ├── executive_memo_plan.md
+│   └── validation_findings.md
 ├── scripts/
-│   └── download_data.py
+│   ├── download_data.py
+│   ├── run_experiment_analysis.py
+│   └── run_validation.py
 ├── sql/
 │   ├── 01_quality_checks.sql
 │   └── 02_experiment_summary.sql
@@ -132,12 +151,8 @@ source .venv/bin/activate
 
 pip install -r requirements.txt
 python scripts/download_data.py
-```
-
-The validated file will be stored locally at:
-
-```text
-data/raw/hillstrom.csv
+python scripts/run_validation.py
+python scripts/run_experiment_analysis.py
 ```
 
 ## Planned portfolio deliverables
@@ -156,8 +171,8 @@ data/raw/hillstrom.csv
 - [x] Define the business decision
 - [x] Create repository structure
 - [x] Add reproducible download and validation framework
-- [ ] Download and profile the raw data
-- [ ] Complete experiment-integrity checks
+- [x] Download and profile the raw data
+- [x] Complete experiment-integrity checks
 - [ ] Estimate overall treatment effects
 - [ ] Build commercial sensitivity model
 - [ ] Complete segment and targeting analysis
