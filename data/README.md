@@ -8,11 +8,15 @@ Original description:
 
 - https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html
 
-Direct source file used by the download script:
+Original source file:
 
 - http://www.minethatdata.com/Kevin_Hillstrom_MineThatData_E-MailAnalytics_DataMiningChallenge_2008.03.20.csv
 
-A GitHub-hosted copy maintained in the CausalML examples repository is used only as a fallback when the original host is unavailable.
+When the original host is unavailable, the download script uses the compressed Hillstrom copy referenced by scikit-uplift:
+
+- https://hillstorm1.s3.us-east-2.amazonaws.com/hillstorm_no_indices.csv.gz
+
+The fallback file is checked against the MD5 value published in the scikit-uplift dataset loader before it is accepted.
 
 ## Local file policy
 
