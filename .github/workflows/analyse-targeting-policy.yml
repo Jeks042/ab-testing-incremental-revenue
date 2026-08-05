@@ -1,0 +1,48 @@
+name: Analyse targeting policy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/run_targeting_analysis.py"
+      - "src/policy_targeting.py"
+      - "notebooks/03_targeting_policy.ipynb"
+      - ".github/workflows/analyse-targeting-policy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Download and validate source data
+        run: python scripts/download_data.py
+
+      - name: Evaluate held-out targeting policies
+        run: python scripts/run_targeting_analysis.py
+
+      - name: Upload targeting policy tables
+        uses: actions/upload-artifact@v7
+        with:
+          name: targeting-policy-analysis-tables
+          path: reports/targeting_tables/
+          if-no-files-found: error
+          retention-days: 30
