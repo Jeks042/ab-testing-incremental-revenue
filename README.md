@@ -52,9 +52,9 @@ Supporting analysis and documentation:
 - [Main treatment-effect findings](reports/main_effect_findings.md)
 - [Segment-analysis findings](reports/segment_findings.md)
 - [Targeting-policy findings](reports/targeting_findings.md)
-- [Methodology and limitations](reports/methodology_and_limitations.md)
-- [Three-minute project walkthrough](reports/three_minute_walkthrough.md)
-- [Interview defence guide](reports/interview_defence_guide.md)
+- [Methodology and limitations](docs/methodology_and_limitations.md)
+- [Three-minute project walkthrough](docs/walkthrough_script.md)
+- [Interview defence guide](docs/interview_guide.md)
 
 ## Technology
 
