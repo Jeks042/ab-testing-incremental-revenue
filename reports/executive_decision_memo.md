@@ -1,56 +1,52 @@
 # Executive Decision Memo
 
-## Recommendation
+## Decision
 
-**Use Men's E-Mail as the operating treatment for eligible customers when campaign economics clear the documented threshold. Do not deploy the current personalised targeting model.**
+**Deploy Men's E-Mail as the operating treatment for eligible customers when campaign economics clear the documented threshold. Do not deploy the current personalised targeting policy.**
 
-## Evidence
+The randomised experiment shows that Men's E-Mail created the strongest incremental commercial value of the tested treatments. It increased spend per eligible customer by **£0.77 versus No E-Mail** and by **£0.35 versus Women's E-Mail**. The personalised policy produced a positive point estimate on held-out data, but the uncertainty around that uplift was too wide to support deployment.
 
-The randomized experiment included 64,000 customers across Men's E-Mail, Women's E-Mail and No E-Mail control.
+## Commercial impact
 
-Relative to control:
+At the reference scenario of a **40% contribution margin** and **£0.10 contact cost per customer**:
 
-- Men's E-Mail increased visit rate by 7.66 percentage points, conversion rate by 0.68 points and spend per eligible customer by 0.770.
-- Women's E-Mail increased visit rate by 4.52 percentage points, conversion rate by 0.31 points and spend per eligible customer by 0.424.
+| Treatment | Incremental spend vs control | Estimated profit per 1,000 | Break-even contact cost |
+|---|---:|---:|---:|
+| Men's E-Mail | £0.770 per customer | ~£208 | £0.308 |
+| Women's E-Mail | £0.424 per customer | ~£70 | £0.170 |
 
-In the direct head-to-head comparison, Men's E-Mail exceeded Women's E-Mail by:
+Using the lower 95% confidence bound for the revenue effect, estimated profit remained positive for both treatments, but Men's E-Mail retained a materially wider cost buffer.
 
-- 3.14 percentage points on visit rate;
-- 0.37 percentage points on conversion rate; and
-- 0.345 spend units per eligible customer, with a 95% confidence interval of 0.044 to 0.666 and Holm-adjusted p-value of 0.0305.
+## Evidence behind the decision
 
-## Commercial interpretation
+The experiment included **64,000 customers** allocated across Men's E-Mail, Women's E-Mail and No E-Mail control. Treatment allocation and baseline checks supported causal comparison.
 
-At a 40% contribution margin and contact cost of 0.10 per customer:
+Relative to No E-Mail, Men's E-Mail increased:
 
-- Men's E-Mail generated approximately 208 incremental profit units per 1,000 eligible customers.
-- Women's E-Mail generated approximately 70 per 1,000.
-- Men's E-Mail had a break-even contact cost of 0.308, compared with 0.170 for Women's E-Mail.
+- visit rate by **7.66 percentage points**;
+- conversion rate by **0.68 percentage points**; and
+- spend per eligible customer by **£0.770**.
 
-Using the lower 95% confidence bound, the estimated profit remained positive for both treatments, but the Women's treatment had a materially narrower cost buffer.
+Women's E-Mail also created positive incremental value, but the direct head-to-head comparison favoured Men's E-Mail. Men's E-Mail delivered **£0.345 more spend per eligible customer** than Women's E-Mail, with a 95% confidence interval of **£0.044 to £0.666** and a Holm-adjusted p-value of **0.0305**.
 
-## Targeting decision
+## Why personalisation was not approved
 
-A treatment-stratified 70/30 train-holdout split was used to evaluate personalised policies on 19,200 unseen randomized customers.
+Personalised treatment policies were evaluated on a **19,200-customer randomised holdout**, separate from the data used to fit the outcome models.
 
-The two candidate policies produced:
+| Candidate policy | Profit uplift vs Men's-send-to-all | 95% bootstrap interval |
+|---|---:|---:|
+| Highest predicted spend | +£28.7 per 1,000 | -£120.2 to +£170.6 |
+| Profit-aware policy | +£18.3 per 1,000 | -£129.1 to +£155.4 |
 
-- highest predicted spend: +28.7 profit units per 1,000 versus Men's-send-to-all, 95% bootstrap interval -120.2 to +170.6;
-- profit-aware policy: +18.3 per 1,000, interval -129.1 to +155.4.
+Both intervals include zero and economically meaningful downside. The analysis therefore does not establish that model-based personalisation improves profit beyond Men's E-Mail to all.
 
-Both intervals include zero and economically meaningful losses. The current model therefore does not provide sufficiently precise evidence to replace the strongest fixed policy.
+## Operating recommendation
 
-## Action plan
+- Use Men's E-Mail where expected incremental contribution exceeds contact and campaign cost.
+- Continue to use spend per eligible customer as the primary commercial outcome, with visits and conversions as supporting measures.
+- Keep the current targeting model in research rather than production.
+- Test any future personalised policy prospectively against Men's-send-to-all through direct randomisation.
 
-1. Use Men's E-Mail when expected incremental contribution exceeds contact and campaign cost.
-2. Continue measuring spend per eligible customer as the primary outcome.
-3. Do not use the current model for customer assignment.
-4. Prospectively test any future personalised policy against Men's-send-to-all through direct randomization.
+## Decision boundaries
 
-## Key limitations
-
-- Results apply to one retailer, campaign context and outcome window.
-- The source lacks a unique customer identifier.
-- Spend is rare, zero-inflated and highly skewed.
-- Commercial conclusions depend on margin, contact cost and unobserved campaign costs.
-- The targeting model has not demonstrated prospective incremental profit.
+The recommendation is specific to the observed retailer, campaign context and outcome window. The source does not contain a unique customer identifier, spend is rare and highly skewed, and the commercial result depends on contribution margin, contact cost and any fixed or treatment-specific campaign costs not observed in the dataset.
