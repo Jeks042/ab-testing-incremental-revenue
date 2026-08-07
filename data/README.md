@@ -1,65 +1,51 @@
 # Data
 
-## Source
+## Experiment population
 
-This project uses the Hillstrom email marketing experiment published by Kevin Hillstrom through the MineThatData E-Mail Analytics and Data Mining Challenge.
+The analysis uses the Hillstrom email marketing experiment published through the MineThatData E-Mail Analytics and Data Mining Challenge. The dataset contains **64,000 customers** allocated approximately equally across three randomised arms:
 
-Original description:
+- `Mens E-Mail`
+- `Womens E-Mail`
+- `No E-Mail`
 
-- https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html
+Customer characteristics were measured before treatment. Website visit, conversion and spend were observed after treatment and used as experiment outcomes.
 
-Original source file:
+Original experiment description: [MineThatData E-Mail Analytics and Data Mining Challenge](https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html)
 
-- http://www.minethatdata.com/Kevin_Hillstrom_MineThatData_E-MailAnalytics_DataMiningChallenge_2008.03.20.csv
+## Data used in the analysis
 
-When the original host is unavailable, the download script uses the compressed Hillstrom copy referenced by scikit-uplift:
-
-- https://hillstorm1.s3.us-east-2.amazonaws.com/hillstorm_no_indices.csv.gz
-
-The fallback file is checked against the MD5 value published in the scikit-uplift dataset loader before it is accepted.
-
-## Local file policy
-
-The raw CSV is not committed to this repository. This keeps the repository lightweight and preserves a clear distinction between source data and analysis code.
-
-Run:
-
-```bash
-python scripts/download_data.py
-```
-
-The script will save the validated file to:
-
-```text
-data/raw/hillstrom.csv
-```
-
-## Expected fields
-
-| Field | Role | Description |
+| Field | Analytical role | Description |
 |---|---|---|
 | `recency` | Pre-treatment | Months since last purchase |
-| `history_segment` | Pre-treatment | Band of prior-year customer spend |
+| `history_segment` | Pre-treatment | Prior-year spend band |
 | `history` | Pre-treatment | Customer spend in the prior year |
-| `mens` | Pre-treatment | Whether the customer previously purchased men's merchandise |
-| `womens` | Pre-treatment | Whether the customer previously purchased women's merchandise |
+| `mens` | Pre-treatment | Previous purchase of men's merchandise |
+| `womens` | Pre-treatment | Previous purchase of women's merchandise |
 | `zip_code` | Pre-treatment | Urban, suburban or rural classification |
-| `newbie` | Pre-treatment | Whether the customer was new during the prior year |
+| `newbie` | Pre-treatment | New-customer indicator |
 | `channel` | Pre-treatment | Prior purchase channel |
-| `segment` | Treatment | Men's email, women's email or no-email control |
-| `visit` | Post-treatment outcome | Website visit during the outcome period |
-| `conversion` | Post-treatment outcome | Purchase during the outcome period |
-| `spend` | Post-treatment outcome | Customer spend during the outcome period |
+| `segment` | Treatment | Randomised email treatment or control |
+| `visit` | Outcome | Website visit during the outcome period |
+| `conversion` | Outcome | Purchase during the outcome period |
+| `spend` | Primary commercial outcome | Spend during the outcome period |
 
-## Data-handling principles
+## Validation outcome
 
-- The raw file is never edited in place.
-- Cleaning decisions will be reproducible and documented.
-- Known spelling inconsistencies in source categories will be preserved in raw data and standardised only in processed data.
-- Post-treatment outcomes will not be used as targeting features.
-- Treatment allocation and baseline balance will be checked before effect estimation.
-- Any row exclusions will be counted, justified and reconciled to the original row total.
+The source data passed the experiment-integrity review before treatment effects were estimated:
 
-## Provenance note
+- **64,000 rows** and the expected 12-field schema were reconciled.
+- No missing cells or invalid binary values were found.
+- No negative spend values or outcome-consistency exceptions were identified.
+- Treatment allocation showed no evidence of sample-ratio mismatch (`p = 0.9037`).
+- Baseline differences across the reviewed pre-treatment variables were immaterial; the largest absolute standardised mean difference was **0.0086**.
+- **6,562 exact row matches** were retained because the source contains no customer identifier and identical observed records cannot be assumed to represent duplicate customers.
 
-The portfolio analysis will cite the original MineThatData publication. No claim is made that this repository created or owns the underlying dataset.
+The primary analysis therefore uses the full **64,000-customer intention-to-treat population** with no row exclusions.
+
+See [experiment-integrity findings](../reports/validation_findings.md) for the complete review.
+
+## Provenance and reproducibility
+
+The raw CSV is not committed to the repository. `scripts/download_data.py` retrieves the source data and validates the expected schema and row count before analysis. When the original MineThatData host is unavailable, the script uses the compressed Hillstrom copy referenced by scikit-uplift and verifies that fallback against its published MD5 checksum.
+
+The project does not claim ownership of the underlying dataset. All analysis, validation logic, commercial modelling and reporting in this repository were produced from the published experiment data.
