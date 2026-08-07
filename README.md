@@ -46,15 +46,19 @@ This project evaluates a 64,000-customer randomised email experiment for a retai
 
 The analysis uses intention-to-treat estimates and pre-treatment customer variables only. It treats spend per eligible customer as the primary commercial outcome, distinguishes predictive performance from causal policy value, and requires personalised policies to outperform the strongest fixed treatment on held-out randomised data with adequate precision.
 
-Supporting analysis and documentation:
+Decision reports:
 
 - [Experiment validation findings](reports/validation_findings.md)
 - [Main treatment-effect findings](reports/main_effect_findings.md)
 - [Segment-analysis findings](reports/segment_findings.md)
 - [Targeting-policy findings](reports/targeting_findings.md)
-- [Methodology and limitations](docs/methodology_and_limitations.md)
-- [Three-minute project walkthrough](docs/walkthrough_script.md)
-- [Interview defence guide](docs/interview_guide.md)
+
+Project documentation:
+
+- [Business decision brief](docs/business_brief.md)
+- [Analytical design](docs/analytical_design.md)
+- [Analytical decision rationale](docs/decision_rationale.md)
+- [Methodology, decision controls and limitations](docs/methodology_and_limitations.md)
 
 ## Technology
 
